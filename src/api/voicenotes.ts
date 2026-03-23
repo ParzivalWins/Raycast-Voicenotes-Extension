@@ -1,5 +1,4 @@
 import { getPreferenceValues } from "@raycast/api";
-import fetch from "node-fetch";
 
 const BASE_URL = "https://api.voicenotes.com/api/integrations/obsidian-sync";
 
@@ -40,7 +39,7 @@ export async function getRecordings(): Promise<VoiceNote[]> {
     method: "POST",
     headers: getHeaders(),
     body: JSON.stringify({
-      last_synced_note_updated_at: undefined,
+      last_synced_note_updated_at: null,
       obsidian_deleted_recording_ids: [],
     }),
   });
@@ -51,16 +50,4 @@ export async function getRecordings(): Promise<VoiceNote[]> {
 
   const json = (await response.json()) as RecordingsResponse;
   return json.data;
-}
-
-export async function getUserInfo() {
-  const response = await fetch(`${BASE_URL}/user/info`, {
-    headers: getHeaders(),
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch user info: ${response.statusText}`);
-  }
-
-  return response.json();
 }

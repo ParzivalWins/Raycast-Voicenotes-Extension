@@ -2,6 +2,7 @@ import {
   ActionPanel,
   Action,
   List,
+  Detail,
   showToast,
   Toast,
   Color,
@@ -102,49 +103,39 @@ export default function Command() {
 
 function NoteDetail({ note }: { note: VoiceNote }) {
   return (
-    <List isShowingDetail>
-      <List.Item
-        title={note.title}
-        detail={
-          <List.Item.Detail
-            markdown={note.transcript}
-            metadata={
-              <List.Item.Detail.Metadata>
-                <List.Item.Detail.Metadata.Label
-                  title="Created"
-                  text={new Date(note.created_at).toLocaleString()}
-                />
-                <List.Item.Detail.Metadata.Label
-                  title="Duration"
-                  text={`${note.duration}s`}
-                />
-                {note.tags && note.tags.length > 0 && (
-                  <List.Item.Detail.Metadata.TagList title="Tags">
-                    {note.tags.map((tag) => (
-                      <List.Item.Detail.Metadata.TagList.Item
-                        key={tag.name}
-                        text={tag.name}
-                        color={Color.Blue}
-                      />
-                    ))}
-                  </List.Item.Detail.Metadata.TagList>
-                )}
-              </List.Item.Detail.Metadata>
-            }
+    <Detail
+      markdown={note.transcript}
+      metadata={
+        <Detail.Metadata>
+          <Detail.Metadata.Label
+            title="Created"
+            text={new Date(note.created_at).toLocaleString()}
           />
-        }
-        actions={
-          <ActionPanel>
-            <Action.OpenInBrowser
-              url={`https://voicenotes.com/notes/${note.id}`}
-            />
-            <Action.CopyToClipboard
-              content={note.transcript}
-              title="Copy Transcript"
-            />
-          </ActionPanel>
-        }
-      />
-    </List>
+          <Detail.Metadata.Label title="Duration" text={`${note.duration}s`} />
+          {note.tags && note.tags.length > 0 && (
+            <Detail.Metadata.TagList title="Tags">
+              {note.tags.map((tag) => (
+                <Detail.Metadata.TagList.Item
+                  key={tag.name}
+                  text={tag.name}
+                  color={Color.Blue}
+                />
+              ))}
+            </Detail.Metadata.TagList>
+          )}
+        </Detail.Metadata>
+      }
+      actions={
+        <ActionPanel>
+          <Action.OpenInBrowser
+            url={`https://voicenotes.com/notes/${note.id}`}
+          />
+          <Action.CopyToClipboard
+            content={note.transcript}
+            title="Copy Transcript"
+          />
+        </ActionPanel>
+      }
+    />
   );
 }
